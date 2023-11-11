@@ -2,7 +2,7 @@
   <head>PHP 7.4</head>
 <body>
 <?php 
-echo 'PHP7.4 working'
+echo '<br><h1> PHP7.4 working </h1>'
 ?>
 <body>
 </html>

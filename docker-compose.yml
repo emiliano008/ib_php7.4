@@ -3,9 +3,9 @@ services:
   nginx:
     build:
       context: .
-      dockerfile: Dockerfile.nginx
+      dockerfile: Dockerfile.nginx     
     ports:
-      - "80:80"
+      - "5080:8080"
     volumes:
       - ./html:/usr/share/nginx/html
     depends_on:
@@ -16,4 +16,4 @@ services:
       context: .
       dockerfile: Dockerfile.php
     volumes:
-      - ./html:/var/www/html
+      - ./html:/usr/share/nginx/html
