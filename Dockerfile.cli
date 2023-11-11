@@ -1,0 +1,27 @@
+FROM alpine:latest
+
+LABEL maintainer="s2w"
+
+ARG GROUP_ID
+ARG USER_ID
+ARG SFTP_USER
+ARG SFTP_PASS
+
+# Install OpenSSH and clear cache
+RUN apk update && apk add openssh && rm -rf /var/cache/apk/*
+
+# Copy config sshd
+# COPY ./config/sftp_alpine.conf /etc/ssh/sshd_config
+
+# Config service SSH
+RUN ssh-keygen -A
+
+# Add USER for SFTP
+RUN adduser -D -s /sbin/nologin $SFTP_USER && echo "$SFTP_USER:$SFTP_PASS" | chpasswd
+
+# Add sftp user to group www-data
+RUN adduser $SFTP_USER www-data
+
+EXPOSE 22
+
+CMD ["/usr/sbin/sshd", "-D"]

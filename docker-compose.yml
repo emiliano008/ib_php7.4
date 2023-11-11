@@ -3,9 +3,15 @@ services:
   nginx:
     build:
       context: .
-      dockerfile: Dockerfile.nginx     
+      dockerfile: Dockerfile.nginx
+    environment:      
+      - DB_HOST=db       
+      - DB_NAME=php74
+      - DB_USER=php74        
+      - DB_PASS=php74        
     ports:
       - "5080:8080"
+    restart: always
     volumes:
       - ./html:/usr/share/nginx/html
     depends_on:
@@ -15,5 +21,21 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.php
+    restart: always
     volumes:
       - ./html:/usr/share/nginx/html
+
+  cli:
+    build:
+      context: .
+      dockerfile: Dockerfile.cli
+      args:
+        - USER_ID=${USER_ID:-1001}
+        - GROUP_ID=${GROUP_ID:-1001}
+        - SFTP_USER=${SFTP_USER:-test}
+        - SFTP_PASS=${SFTP_PASS:-test}
+    ports:
+      - "5022:22"
+    restart: always
+    volumes:
+      - ./html:/home/${SFTP_USER:-test}
